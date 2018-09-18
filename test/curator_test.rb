@@ -100,6 +100,7 @@ class ArtistTest < Minitest::Test
   end
   
   def test_find_multiple_photos_by_artist
+    
     @curator.add_photograph(@photo_1)
     @curator.add_photograph(@photo_2)
     @curator.add_photograph(@photo_3)
@@ -109,5 +110,28 @@ class ArtistTest < Minitest::Test
     @curator.add_artist(@artist_3)
     
     assert_equal [@artist_3], @curator.artists_with_multiple_photographs
+  end
+
+  def test_find_photos_by_artist_country
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+    @curator.add_photograph(@photo_3)
+    @curator.add_photograph(@photo_4)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    
+    assert_equal [@photo_2, @photo_3, @photo_4], @curator.photographs_taken_by_artist_from("United States")
+  end
+
+  def test_country_search_returns_empty_if_country_not_found
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+    @curator.add_photograph(@photo_3)
+    @curator.add_photograph(@photo_4)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
   end
 end

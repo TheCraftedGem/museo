@@ -36,11 +36,22 @@ class Curator
   end
 
   def artists_with_multiple_photographs
-   grouped = @artists.map do |artist|
-      find_photographs_by_artist(artist)
+    most = @photographs.max_by do |element|
+      element.artist_id
     end
-    grouped.keep_if do |group|
-      group[0].artist_id.length > 1
+      @artists.find_all do |element|
+        element.id == most.artist_id
     end
   end
+
+  def photographs_taken_by_artist_from(country)
+    filtered_artist =  @artists.keep_if do |artist|
+      artist.country == country
+     end
+     filtered_artist.map do |element|
+      find_photographs_by_artist(element)
+     end.flatten
+  end
+
+
 end
